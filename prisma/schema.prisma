@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  password      String
+  name          String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+  alerts        Alert[]
+}
+
+model Route {
+  id          Int            @id @default(autoincrement())
+  name        String
+  origin      String
+  destination String
+  active      Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  buses       Bus[]
+  subscriptions Subscription[]
+}
+
+// Tabla pivot: un usuario se suscribe a una ruta frecuente
+model Subscription {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  routeId   Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  route     Route    @relation(fields: [routeId], references: [id])
+
+  @@unique([userId, routeId]) // un usuario no puede suscribirse dos veces a la misma ruta
+}
+
+model Bus {
+  id          Int          @id @default(autoincrement())
+  plate       String       @unique
+  model       String
+  capacity    Int
+  active      Boolean      @default(true)
+  routeId     Int
+  createdAt   DateTime     @default(now())
+  route       Route        @relation(fields: [routeId], references: [id])
+  location    BusLocation?
+  alerts      Alert[]
+}
+
+// Última posición conocida del bus — un solo row por bus (upsert)
+model BusLocation {
+  id        Int      @id @default(autoincrement())
+  busId     Int      @unique  // @unique fuerza que solo exista un row por bus
+  latitude  Float
+  longitude Float
+  updatedAt DateTime @updatedAt
+  bus       Bus      @relation(fields: [busId], references: [id])
+}
+
+model Alert {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  busId     Int
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  bus       Bus      @relation(fields: [busId], references: [id])
+}
