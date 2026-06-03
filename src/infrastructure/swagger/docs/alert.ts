@@ -82,3 +82,34 @@
  *       200:
  *         description: Alerta eliminada
  */
+
+/**
+ * @swagger
+ * /alerts/proximity:
+ *   post:
+ *     summary: Detectar buses cercanos y crear alertas automáticas
+ *     tags: [Alerts]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [latitude, longitude]
+ *             properties:
+ *               latitude:
+ *                 type: number
+ *                 example: 4.6951
+ *               longitude:
+ *                 type: number
+ *                 example: -74.0452
+ *               thresholdMeters:
+ *                 type: number
+ *                 example: 500
+ *                 description: Radio de búsqueda en metros (default 500)
+ *     responses:
+ *       200:
+ *         description: Alertas generadas para buses cercanos
+ */
