@@ -1,6 +1,6 @@
 
 import { IRouteRepository } from '../../domain/repositories/IRouteRepository';
-import Route from '../../domain/entities/ERoute';
+import Route from '../../domain/entities/Route';
 
 interface CreateRouteInput{
     name: string;
@@ -13,8 +13,8 @@ interface CreateRouteInput{
 export default class CreateRoute {
     constructor(private readonly routeRepository: IRouteRepository) {}
 
-    async execute(input: CreateRouteInput): Promise<any> {
+    execute(input: CreateRouteInput): Promise<any> {
         const route = new Route(input);
-        return await this.routeRepository.save(route);
+        return this.routeRepository.save(route);
     }
 }

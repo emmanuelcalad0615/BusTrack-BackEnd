@@ -8,9 +8,7 @@ interface UpdateRouteInput {
 export default class UpdateRoute {
     constructor(private readonly routeRepository: IRouteRepository) {}
 
-    async execute(input: UpdateRouteInput): Promise<any> {
-        
-        const route = await this.routeRepository.update(input.id, input.data);
-        return route;
+    execute(input: UpdateRouteInput): Promise<any> {
+        return this.routeRepository.update(input.id, input.data);
     }
 }

@@ -1,4 +1,4 @@
-import Route from "../entities/ERoute";
+import Route from "../entities/Route";
 
 export interface RouteUpdateData {
   name?: string;

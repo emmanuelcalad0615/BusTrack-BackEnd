@@ -1,5 +1,5 @@
 import prisma from './prismaClient';
-import ERoute from '../../domain/entities/ERoute';
+import ERoute from '../../domain/entities/Route';
 import {IRouteRepository, RouteUpdateData} from '../../domain/repositories/IRouteRepository';
 
 export default class PrismaRouteRepository implements IRouteRepository {

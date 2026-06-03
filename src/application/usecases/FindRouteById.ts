@@ -1,10 +1,9 @@
-import Route  from "../../domain/entities/ERoute";
+import Route  from "../../domain/entities/Route";
 import { IRouteRepository } from "../../domain/repositories/IRouteRepository";
 
 export default class FindByIdRoute {
     constructor(private readonly routeRepository: IRouteRepository) {}
-    async execute(id:number): Promise<Route | null> { 
-        const route = await this.routeRepository.findById(id);
-        return route;
+    execute(id: number): Promise<Route | null> {
+        return this.routeRepository.findById(id);
     }
 }
