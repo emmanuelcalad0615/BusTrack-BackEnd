@@ -10,11 +10,13 @@ export default class PrismaUserRepository implements IUserRepository {
         email:    user.email,
         password: user.password,
         name:     user.name,
+        role:     user.role,
       },
       select: {
         id:        true,
         email:     true,
         name:      true,
+        role:      true,
         createdAt: true,
       }
     });
