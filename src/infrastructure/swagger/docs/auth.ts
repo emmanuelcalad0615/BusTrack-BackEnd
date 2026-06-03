@@ -61,3 +61,36 @@
  *       401:
  *         description: Credenciales inválidas
  */
+
+/**
+ * @swagger
+ * /auth/register-admin:
+ *   post:
+ *     summary: Registrar usuario administrador (requiere clave secreta)
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email, password, name, adminSecret]
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: admin@bustrack.com
+ *               password:
+ *                 type: string
+ *                 example: "123456"
+ *               name:
+ *                 type: string
+ *                 example: Admin BusTrack
+ *               adminSecret:
+ *                 type: string
+ *                 example: tu_clave_secreta
+ *     responses:
+ *       201:
+ *         description: Admin creado
+ *       403:
+ *         description: Clave de administrador inválida
+ */

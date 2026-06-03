@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import RegisterUser from '../../application/usecases/RegisterUser';
 import LoginUser from '../../application/usecases/LoginUser';
+import RegisterAdmin from '../../application/usecases/RegisterAdmin';
 import PrismaUserRepository from '../../infrastructure/db/PrismaUserRepository';
 
-const repository = new PrismaUserRepository();
-const registerUser = new RegisterUser(repository);
-const loginUser = new LoginUser(repository);
+const repository    = new PrismaUserRepository();
+const registerUser  = new RegisterUser(repository);
+const loginUser     = new LoginUser(repository);
+const registerAdmin = new RegisterAdmin(repository);
 
 export class AuthController {
 
@@ -22,6 +24,15 @@ export class AuthController {
     try {
       const result = await loginUser.execute(req.body);
       res.status(200).json({ ok: true, data: result });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async registerAdminHandler(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const user = await registerAdmin.execute(req.body);
+      res.status(201).json({ ok: true, data: user });
     } catch (error) {
       next(error);
     }

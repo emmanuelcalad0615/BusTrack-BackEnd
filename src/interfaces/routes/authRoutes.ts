@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/AuthController';
 import { validate } from '../../infrastructure/middlewares/validate';
-import { RegisterSchema, LoginSchema } from '../../infrastructure/middlewares/schemas/authSchemas';
+import { RegisterSchema, LoginSchema, RegisterAdminSchema } from '../../infrastructure/middlewares/schemas/authSchemas';
 
 const router = Router();
 const controller = new AuthController();
@@ -16,6 +16,12 @@ router.post(
   '/login',
   validate(LoginSchema, 'body'),
   (req, res, next) => controller.login(req, res, next)
+);
+
+router.post(
+  '/register-admin',
+  validate(RegisterAdminSchema, 'body'),
+  (req, res, next) => controller.registerAdminHandler(req, res, next)
 );
 
 export default router;
