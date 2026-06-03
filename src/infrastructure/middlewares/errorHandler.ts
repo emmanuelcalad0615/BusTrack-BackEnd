@@ -11,6 +11,7 @@ export const errorHandler = (
   const errorMap: Record<string, number> = {
     'Ya existe un usuario con ese email': 400,
     'Ya estás suscrito a esta ruta': 400,
+    'Clave de administrador inválida': 403,
     'Credenciales inválidas': 401,
     'Token inválido o expirado': 401,
     'No autorizado': 401,
