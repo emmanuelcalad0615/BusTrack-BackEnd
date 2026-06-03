@@ -10,12 +10,16 @@ export const errorHandler = (
 
   const errorMap: Record<string, number> = {
     'Ya existe un usuario con ese email': 400,
+    'Ya estás suscrito a esta ruta': 400,
     'Credenciales inválidas': 401,
     'Token inválido o expirado': 401,
     'No autorizado': 401,
     'Usuario no encontrado': 404,
     'Bus no encontrado': 404,
     'Ruta no encontrada': 404,
+    'Suscripción no encontrada': 404,
+    'Alerta no encontrada': 404,
+    'Ubicación no encontrada': 404,
   };
 
   const status = errorMap[error.message] ?? 500;
