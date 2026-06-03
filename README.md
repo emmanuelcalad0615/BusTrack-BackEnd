@@ -2,6 +2,17 @@
 
 Sistema de rastreo de buses en tiempo real con alertas de proximidad. API REST construida con **Clean Architecture**, **Node.js**, **TypeScript**, **Express**, **Prisma 7** y **Supabase (PostgreSQL)**.
 
+## Demo en vivo
+
+La API está desplegada en **Railway**:
+
+| Recurso | URL |
+|---|---|
+| Base de la API | https://bustrack-backend-production-2fa2.up.railway.app |
+| Documentación Swagger | https://bustrack-backend-production-2fa2.up.railway.app/api/docs/ |
+
+> Probá los endpoints directo desde el Swagger en vivo.
+
 ---
 
 ## Stack tecnológico
@@ -101,6 +112,8 @@ JWT_SECRET="string_largo_y_seguro"
 ADMIN_SECRET="clave_para_crear_administradores"
 ```
 
+> ⚠️ La `DATABASE_URL` de arriba (conexión **directa**, host `db.xxxx.supabase.co`) sirve en local, pero **falla al desplegar en la nube** porque resuelve por IPv6 y la mayoría de plataformas (Railway, Render) no tienen salida IPv6. En producción usá el **connection pooler IPv4** de Supabase (host `pooler.supabase.com`). Ver sección [Despliegue](#despliegue-railway).
+
 ---
 
 ## Endpoints principales
@@ -193,6 +206,44 @@ npm run start           # Correr build de producción
 npm run prisma:migrate  # Aplicar migraciones
 npm run prisma:generate # Regenerar cliente Prisma
 ```
+
+---
+
+## Despliegue (Railway)
+
+La API está desplegada en [Railway](https://railway.app), que redespliega automáticamente en cada `git push` a `main`.
+
+### Pasos
+
+1. **Crear proyecto** → Railway → *New Project* → *Deploy from GitHub repo* → seleccionar este repo. Railway detecta Node y corre `npm ci` → `npm run build` → `npm start`.
+
+2. **Variables de entorno** → servicio → pestaña *Variables* → agregar (NO agregar `PORT`, Railway lo inyecta solo):
+
+   | Variable | Valor |
+   |---|---|
+   | `DATABASE_URL` | Cadena del **pooler IPv4** de Supabase (ver abajo) |
+   | `JWT_SECRET` | Secreto para firmar tokens |
+   | `ADMIN_SECRET` | Clave para registrar administradores |
+
+3. **Dominio público** → servicio → *Settings* → *Networking* → *Generate Domain*.
+
+### Detalles que hay que respetar para que el build y el runtime funcionen
+
+- **`postinstall: prisma generate`** en `package.json`: el cliente Prisma se genera en `src/generated/` (está en `.gitignore`, no se sube), así que el servidor debe regenerarlo tras instalar dependencias.
+
+- **`DATABASE_URL` con pooler IPv4**: la conexión directa de Supabase (`db.xxxx.supabase.co:5432`) solo resuelve por IPv6 y Railway no tiene salida IPv6 → `ENETUNREACH`. Usar el **Session pooler** (host `pooler.supabase.com`), que es IPv4:
+
+  ```
+  postgresql://postgres.<ref>:[PASSWORD]@aws-1-us-east-2.pooler.supabase.com:5432/postgres
+  ```
+
+  Se obtiene en Supabase → botón *Connect* → *Session pooler*.
+
+- **Swagger con URL relativa**: el spec usa `servers: [{ url: '/api/v1' }]` (relativa, no `http://localhost:3000`), para que el "Try it out" apunte al host real donde corre la app, sea local o Railway.
+
+- **Imports con mayúsculas exactas**: Railway corre Linux (case-sensitive). Un import a `prismaRouteRepository` cuando el archivo es `PrismaRouteRepository.ts` rompe el build, aunque en Windows funcione.
+
+
 
 ---
 
