@@ -1,15 +1,19 @@
+export type UserRole = 'USER' | 'ADMIN';
+
 interface UserProps {
   email: string;
   password: string;
   name: string;
+  role?: UserRole;
 }
 
 export default class User {
   email: string;
   password: string;
   name: string;
+  role: UserRole;
 
-  constructor({ email, password, name }: UserProps) {
+  constructor({ email, password, name, role = 'USER' }: UserProps) {
     if (!email || !email.includes('@')) {
       throw new Error('El email es inválido');
     }
@@ -23,5 +27,6 @@ export default class User {
     this.email    = email.toLowerCase().trim();
     this.password = password;
     this.name     = name.trim();
+    this.role     = role;
   }
 }
