@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import router from './interfaces/routes/index';
@@ -8,6 +9,16 @@ import { swaggerSpec } from './infrastructure/swagger/swagger';
 dotenv.config();
 
 const app = express();
+
+// Orígenes permitidos para el frontend. FRONTEND_URL (Vercel) se agrega por env
+// para no hardcodear el dominio de producción en el código.
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
+];
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 app.use(express.json());
 
