@@ -9,7 +9,7 @@ const options: swaggerJsdoc.Options = {
       description: 'API REST para rastreo de buses en tiempo real',
     },
     servers: [
-      { url: 'http://localhost:3000/api/v1', description: 'Desarrollo local' }
+      { url: '/api/v1', description: 'Servidor actual' }
     ],
     components: {
       securitySchemes: {
