@@ -13,6 +13,7 @@ interface LoginUserOutput {
     id: number;
     email: string;
     name: string;
+    role: string;
   };
 }
 
@@ -31,14 +32,14 @@ export default class LoginUser {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET!,
       { expiresIn: '24h' }
     );
 
     return {
       token,
-      user: { id: user.id, email: user.email, name: user.name }
+      user: { id: user.id, email: user.email, name: user.name, role: user.role }
     };
   }
 }
