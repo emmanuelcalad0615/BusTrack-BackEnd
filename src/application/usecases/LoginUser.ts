@@ -39,7 +39,7 @@ export default class LoginUser {
 
     return {
       token,
-      user: { id: user.id, email: user.email, name: user.name, role: user.role }
+      user: { id: user.id!, email: user.email, name: user.name, role: user.role }
     };
   }
 }

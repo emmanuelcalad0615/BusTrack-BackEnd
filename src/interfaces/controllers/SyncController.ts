@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import SyncRoutesFromOSM from '../../application/usecases/SyncRoutesFromOSM';
 import SeedBuses from '../../application/usecases/SeedBuses';
-import PrismaRouteRepository from '../../infrastructure/db/prismaRouteRepository';
+import PrismaRouteRepository from '../../infrastructure/db/PrismaRouteRepository';
 import PrismaBusRepository from '../../infrastructure/db/PrismaBusRepository';
 
 const routeRepository   = new PrismaRouteRepository();

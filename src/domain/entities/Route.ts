@@ -6,6 +6,7 @@ interface RouteProps{
 }
 
 export default class Route {
+    id?: number;
     name: string;
     origin: string;
     destination: string;

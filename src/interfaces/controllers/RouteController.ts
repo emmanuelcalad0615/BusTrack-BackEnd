@@ -4,7 +4,7 @@ import UpdateRoute from '../../application/usecases/UpdateRoute';
 import DeleteRoute from '../../application/usecases/DeleteRoute';
 import FindRouteById from '../../application/usecases/FindRouteById';
 import FindAllRoutes from '../../application/usecases/FindRouteAll';
-import PrismaRouteRepository from '../../infrastructure/db/prismaRouteRepository';
+import PrismaRouteRepository from '../../infrastructure/db/PrismaRouteRepository';
 
 const repository =  new PrismaRouteRepository();
 const createRoute = new CreateRoute(repository);

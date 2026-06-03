@@ -38,7 +38,7 @@ export default class SeedBuses {
             plate:    generatePlate(),
             model:    randomItem(BUS_MODELS),
             capacity: randomInt(40, 90),
-            routeId:  route.id,
+            routeId:  route.id!,
             active:   true,
           });
           await this.busRepository.save(bus);
