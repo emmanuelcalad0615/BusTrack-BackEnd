@@ -11,11 +11,14 @@ dotenv.config();
 
 const app = express();
 
-// Orígenes permitidos para el frontend. FRONTEND_URL (Vercel) se agrega por env
-// para no hardcodear el dominio de producción en el código.
+// Orígenes permitidos para el frontend.
+// - localhost para desarrollo.
+// - El dominio de producción (Vercel) fijo, para que funcione sin depender de env.
+// - FRONTEND_URL opcional por env: permite agregar otro origen (ej. preview) sin tocar código.
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
+  'https://bustrack-frontend-gules.vercel.app',
   ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
 ];
 
