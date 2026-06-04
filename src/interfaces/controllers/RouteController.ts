@@ -44,8 +44,19 @@ export class RouteController {
     }
     async findAll(req: Request, res: Response, next: NextFunction): Promise<void>{
         try{
-            const routes = await findAllRoutes.execute();
-            res.status(200).json({ok:true, data: routes});
+            const { page, pageSize, q, active } = req.query as any;
+            const result = await findAllRoutes.execute({
+                page,
+                pageSize,
+                filters: { q, active },
+            });
+            res.status(200).json({
+                ok: true,
+                data: result.data,
+                total: result.total,
+                page: result.page,
+                limit: result.limit,
+            });
         }
         catch(error){
             next(error);

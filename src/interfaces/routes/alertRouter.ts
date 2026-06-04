@@ -12,6 +12,11 @@ router.get('/me',
   (req, res, next) => controller.getMyAlerts(req, res, next)
 );
 
+router.get('/random-location',
+  authMiddleware,
+  (req, res, next) => controller.randomLocation(req, res, next)
+);
+
 router.post('/',
   authMiddleware,
   validate(AlertBodySchema, 'body'),

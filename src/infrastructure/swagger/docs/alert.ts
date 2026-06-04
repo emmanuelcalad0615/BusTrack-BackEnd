@@ -47,6 +47,23 @@
 
 /**
  * @swagger
+ * /alerts/random-location:
+ *   get:
+ *     summary: Generar ubicación aleatoria del usuario en Bogotá (sesgada a un bus suscrito)
+ *     description: >
+ *       Devuelve una coordenada aleatoria dentro de Bogotá. Si el usuario tiene
+ *       suscripciones con buses posicionados, la ubicación cae cerca de uno (≈ <400 m)
+ *       para que POST /alerts/proximity dispare alertas de forma fiable.
+ *     tags: [Alerts]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: "{ ok, data: { latitude, longitude, nearBusId, strategy } }"
+ */
+
+/**
+ * @swagger
  * /alerts/{id}/read:
  *   patch:
  *     summary: Marcar alerta como leída

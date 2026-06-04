@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import router from './interfaces/routes/index';
 import { errorHandler } from './infrastructure/middlewares/errorHandler';
 import { swaggerSpec } from './infrastructure/swagger/swagger';
+import { BusSimulator } from './infrastructure/simulation/BusSimulator';
 
 dotenv.config();
 
@@ -32,6 +33,12 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
   console.log(`Documentación en http://localhost:${PORT}/api/docs`);
+
+  // Simulador de GPS en tiempo real. Se apaga con SIMULATION_ENABLED=false.
+  if (process.env.SIMULATION_ENABLED !== 'false') {
+    const intervalMs = Number(process.env.SIMULATION_INTERVAL_MS) || 5000;
+    new BusSimulator(intervalMs).start();
+  }
 });
 
 export default app;

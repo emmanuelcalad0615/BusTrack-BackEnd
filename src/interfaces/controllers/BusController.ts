@@ -26,8 +26,19 @@ export class BusController {
 
     async findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const buses = await findAllBuses.execute();
-            res.status(200).json({ ok: true, data: buses });
+            const { page, pageSize, q, active, routeId } = req.query as any;
+            const result = await findAllBuses.execute({
+                page,
+                pageSize,
+                filters: { q, active, routeId },
+            });
+            res.status(200).json({
+                ok: true,
+                data: result.data,
+                total: result.total,
+                page: result.page,
+                limit: result.limit,
+            });
         } catch (error) {
             next(error);
         }

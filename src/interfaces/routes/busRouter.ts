@@ -2,13 +2,14 @@ import { Router } from 'express';
 import { BusController } from '../controllers/BusController';
 import { validate } from '../../infrastructure/middlewares/validate';
 import { authMiddleware } from '../../infrastructure/middlewares/authMiddleware';
-import { BusBodySchema, ParamIdSchema } from '../../infrastructure/middlewares/schemas/BusSchemas';
+import { BusBodySchema, ParamIdSchema, BusQuerySchema } from '../../infrastructure/middlewares/schemas/BusSchemas';
 
 const router = Router();
 const controller = new BusController();
 
 router.get('/',
     authMiddleware,
+    validate(BusQuerySchema, 'query'),
     (req, res, next) => controller.findAll(req, res, next)
 );
 

@@ -11,3 +11,12 @@ export const BusBodySchema = z.object({
 export const ParamIdSchema = z.object({
     id: z.coerce.number().int().positive('El id debe ser un número positivo'),
 });
+
+// Query de paginación + filtros para buses.
+export const BusQuerySchema = z.object({
+    page:     z.coerce.number().int().positive().optional().default(1),
+    pageSize: z.coerce.number().int().positive().max(100).optional().default(10),
+    q:        z.string().trim().min(1).optional(),
+    active:   z.enum(['true', 'false']).transform((v) => v === 'true').optional(),
+    routeId:  z.coerce.number().int().positive().optional(),
+});

@@ -26,7 +26,8 @@ export default class SeedBuses {
   ) {}
 
   async execute(busesPerRoute = 2): Promise<{ created: number; failed: number }> {
-    const routes = await this.routeRepository.findAll();
+    // Necesitamos TODAS las rutas para sembrar buses → pedimos una página grande.
+    const { data: routes } = await this.routeRepository.findAll({ skip: 0, take: 10000, filters: {} });
 
     let created = 0;
     let failed  = 0;

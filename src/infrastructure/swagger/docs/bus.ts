@@ -9,13 +9,31 @@
  * @swagger
  * /buses:
  *   get:
- *     summary: Obtener todos los buses
+ *     summary: Obtener buses (paginados + filtros)
  *     tags: [Buses]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *       - in: query
+ *         name: pageSize
+ *         schema: { type: integer, default: 10, maximum: 100 }
+ *       - in: query
+ *         name: q
+ *         schema: { type: string }
+ *         description: Búsqueda en placa o modelo
+ *       - in: query
+ *         name: active
+ *         schema: { type: boolean }
+ *       - in: query
+ *         name: routeId
+ *         schema: { type: integer }
+ *         description: Filtra buses de una ruta
  *     responses:
  *       200:
- *         description: Lista de buses
+ *         description: "Lista paginada: { ok, data, total, page, limit }"
  *       401:
  *         description: No autorizado
  */

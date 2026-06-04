@@ -9,13 +9,30 @@
  * @swagger
  * /routes:
  *   get:
- *     summary: Obtener todas las rutas
+ *     summary: Obtener rutas (paginadas + filtros)
  *     tags: [Routes]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *         description: Número de página
+ *       - in: query
+ *         name: pageSize
+ *         schema: { type: integer, default: 10, maximum: 100 }
+ *         description: Tamaño de página
+ *       - in: query
+ *         name: q
+ *         schema: { type: string }
+ *         description: Búsqueda en nombre, origen o destino
+ *       - in: query
+ *         name: active
+ *         schema: { type: boolean }
+ *         description: Filtra por rutas activas/inactivas
  *     responses:
  *       200:
- *         description: Lista de rutas
+ *         description: "Lista paginada: { ok, data, total, page, limit }"
  *       401:
  *         description: No autorizado
  */

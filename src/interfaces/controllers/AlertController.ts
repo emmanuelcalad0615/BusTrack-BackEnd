@@ -4,6 +4,7 @@ import GetUserAlerts from '../../application/usecases/GetUserAlerts';
 import MarkAlertAsRead from '../../application/usecases/MarkAlertAsRead';
 import DeleteAlert from '../../application/usecases/DeleteAlert';
 import CheckProximityAlerts from '../../application/usecases/CheckProximityAlerts';
+import GetRandomUserLocation from '../../application/usecases/GetRandomUserLocation';
 import PrismaAlertRepository from '../../infrastructure/db/PrismaAlertRepository';
 import PrismaSubscriptionRepository from '../../infrastructure/db/PrismaSubscriptionRepository';
 import PrismaBusRepository from '../../infrastructure/db/PrismaBusRepository';
@@ -12,11 +13,12 @@ const alertRepo        = new PrismaAlertRepository();
 const subscriptionRepo = new PrismaSubscriptionRepository();
 const busRepo          = new PrismaBusRepository();
 
-const createAlert          = new CreateAlert(alertRepo);
-const getUserAlerts        = new GetUserAlerts(alertRepo);
-const markAsRead           = new MarkAlertAsRead(alertRepo);
-const deleteAlert          = new DeleteAlert(alertRepo);
-const checkProximityAlerts = new CheckProximityAlerts(subscriptionRepo, busRepo, alertRepo);
+const createAlert           = new CreateAlert(alertRepo);
+const getUserAlerts         = new GetUserAlerts(alertRepo);
+const markAsRead            = new MarkAlertAsRead(alertRepo);
+const deleteAlert           = new DeleteAlert(alertRepo);
+const checkProximityAlerts  = new CheckProximityAlerts(subscriptionRepo, busRepo, alertRepo);
+const getRandomUserLocation = new GetRandomUserLocation(subscriptionRepo, busRepo);
 
 export class AlertController {
 
@@ -54,6 +56,16 @@ export class AlertController {
     try {
       await deleteAlert.execute(Number(req.params.id));
       res.status(200).json({ ok: true, message: 'Alerta eliminada correctamente' });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async randomLocation(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const userId   = req.user!.id;
+      const location = await getRandomUserLocation.execute(userId);
+      res.status(200).json({ ok: true, data: location });
     } catch (error) {
       next(error);
     }
