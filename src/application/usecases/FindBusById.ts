@@ -3,8 +3,12 @@ import { IBusRepository } from "../../domain/repositories/IBusRepository"
 
 export default class FindBusById {
     constructor(private readonly busRepository: IBusRepository) {}
-    
-    execute(id: number): Promise<Bus | null> {
-        return this.busRepository.findById(id);
+
+    async execute(id: number): Promise<Bus> {
+        const bus = await this.busRepository.findById(id);
+        if (!bus) {
+            throw new Error('Bus no encontrado'); // errorHandler lo mapea a 404
+        }
+        return bus;
     }
 }

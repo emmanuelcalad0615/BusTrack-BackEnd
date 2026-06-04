@@ -3,7 +3,11 @@ import { IRouteRepository } from "../../domain/repositories/IRouteRepository";
 
 export default class FindByIdRoute {
     constructor(private readonly routeRepository: IRouteRepository) {}
-    execute(id: number): Promise<Route | null> {
-        return this.routeRepository.findById(id);
+    async execute(id: number): Promise<Route> {
+        const route = await this.routeRepository.findById(id);
+        if (!route) {
+            throw new Error('Ruta no encontrada'); // errorHandler lo mapea a 404
+        }
+        return route;
     }
 }
